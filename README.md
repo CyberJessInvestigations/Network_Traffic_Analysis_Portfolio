@@ -85,3 +85,5 @@ This project helped strengthen my understanding of malicious PCAP analysis, IOC 
 - GitHub: [CyberJessInvestigations](https://github.com/CyberJessInvestigations)
 - LinkedIn: Add your www.linkedin.com/in/jessicasansaricq
 - Portfolio/YouTube: https://www.youtube.com/@CyberJessInvestigations
+## Copyright / Usage Notice
+© 2026 Jessica Sansaricq. This project is provided for educational and portfolio purposes. Please do not copy, redistribute, or present this work as your own.
