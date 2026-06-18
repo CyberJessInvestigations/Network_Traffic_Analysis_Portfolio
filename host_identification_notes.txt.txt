@@ -1,0 +1,162 @@
+== Infected Host Filter ==
+
+Tool Used:
+Wireshark
+
+Filter Used:
+ip.addr == 10.2.28.88
+
+Known Infected Host:
+10.2.28.88
+
+Finding:
+After applying the filter, Wireshark showed only traffic involving 10.2.28.88. The filtered results confirmed that this host was communicating across multiple protocols, including DNS, Kerberos, SMB, LDAP, and HTTP-related traffic.
+
+Observation:
+Filtering on the infected host removed unrelated traffic from the PCAP and made it easier to focus on host details such as the MAC address, hostname, and Windows username.
+
+Screenshot:
+01_infected_host_filter.png
+
+
+
+== Hostname Discovery ==
+
+Tool Used:
+Wireshark
+
+Filter Used:
+nbns
+
+Known Infected Host:
+10.2.28.88
+
+Hostname Found:
+DESKTOP-TEYQ2NR
+
+Location in Packet Details:
+NetBIOS Name Service / NBNS registration traffic
+
+Observation:
+An NBNS registration packet from the infected host announced the hostname DESKTOP-TEYQ2NR. This helped confirm the workstation name associated with the infected IP address 10.2.28.88.
+
+Screenshot:
+hostname_nbns_registration.png
+
+
+
+== MAC Address Discovery ==
+
+Tool Used:
+Wireshark
+
+Filter Used:
+eth.addr == 00:19:d1:b2:4d:ad
+
+Known Infected Host:
+10.2.28.88
+
+MAC Address Found:
+00:19:d1:b2:4d:ad
+
+Location in Packet Details:
+Ethernet II → Source Address
+
+Observation:
+The Ethernet II details showed the MAC address 00:19:d1:b2:4d:ad associated with traffic from the infected host 10.2.28.88. This helps identify the network interface tied to the infected machine.
+
+Screenshot:
+mac_address_ethernet.png
+
+
+
+
+== Username Discovery ==
+
+Tool Used:
+Wireshark
+
+Filter Used:
+kerberos.CNameString
+
+Known Infected Host:
+10.2.28.88
+
+Username Found:
+brolf
+
+Location in Packet Details:
+Kerberos → CNameString
+
+Observation:
+The Kerberos CNameString field revealed the Windows username brolf. This connects the infected host 10.2.28.88 to the Windows user account brolf.
+
+Screenshot:
+username_brolf_kerberos.png
+
+
+
+== Full Name Discovery ==
+
+Tool Used:
+Wireshark
+
+Method Used:
+SAMR traffic review
+
+Known Infected Host:
+10.2.28.88
+
+Known Username:
+brolf
+
+Full Name Found:
+Becka Rolf
+
+Location in Packet Details:
+SAMR / Windows account details → Full Name
+
+Observation:
+After identifying the username brolf, I reviewed SAMR traffic to look for Windows account details connected to that user. The SAMR packet details showed the decoded Full Name field as Becka Rolf.
+
+Why This Matters:
+Finding the full name helps connect the infected host activity to a specific Windows user account, which is useful for incident response, account review, and remediation.
+
+Screenshot:
+full_name_samr_becka_rolf.png
+
+
+
+== ANSWER KEY COMPARISON ==
+
+Source:
+Malware-Traffic-Analysis.net — 2026-02-28 Easy as 123 Answer Key
+
+Infected Host IP:
+10.2.28.88 → [Found in Wireshark — infected host filter]
+
+MAC Address:
+00:19:d1:b2:4d:ad → [Found in Wireshark — Ethernet II / eth.addr filter]
+
+Hostname:
+DESKTOP-TEYQ2NR → [Found in Wireshark — NBNS registration traffic]
+
+Windows Username:
+brolf → [Found in Wireshark — Kerberos CNameString]
+
+Full Name:
+Becka Rolf → [Found in Wireshark — SAMR account details]
+
+Reflection:
+The IP address and MAC address were straightforward to confirm using Wireshark filters. The hostname appeared clearly in NBNS traffic, and the username was found through Kerberos CNameString. The full name required deeper account-detail review using SAMR traffic, but it was successfully confirmed and matched the answer key.
+
+Screenshot:
+05_answer_key_comparison.png
+
+
+
+
+
+
+
+
